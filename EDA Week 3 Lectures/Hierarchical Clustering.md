@@ -34,7 +34,7 @@
 ![](distance.png)
 ##### [http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf](http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf)
 ![](distance2.png)
-##### In general:
+##### To expand to multiple dimensions:
 ![](math1.jpg)
 ##### [http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf](http://rafalab.jhsph.edu/688/lec/lecture5-clustering.pdf)
 
@@ -55,15 +55,18 @@ plot(x, y, col="blue", pch=19, cex=2)
 text(x + 0.05, y + 0.05, labels=as.character(1:12))
 ```
 
+##### There are three obvious clusters, but can we investigate this mathematically?
+
 ![](plot1.jpeg)
 
-## Hierarchical clustering - dist
+## Hierarchical clustering - Using `dist` to create clusters w/ `hclust`
 - Important parameters: _x_, _method_
 
 ``` r
 dataFrame <- data.frame(x=x, y=y)
 dist(dataFrame)
 ```
+##### Returns a lower triangular matrix w/ all pairwise distances.
 ``` r
             1          2          3          4          5          6          7
 2  0.34120511                                                                  
@@ -91,16 +94,20 @@ dist(dataFrame)
 12 1.66223814 0.10848966 0.19128645 0.20802789
 ```
 
-## Hierarchical clustering - #1
+## Hierarchical clustering - #1 - What are the two closest pairs?
+##### Ans: 5 & 6 (yellow). 
 ![](unnamed-chunk-2.png)
 
-## Hierarchical clustering - #2
+## Hierarchical clustering - #2 - Consider 5 & 6 one point for all future steps.
 ![](unnamed-chunk-3.png)
 
-## Hierarchical clustering - #3
+## Hierarchical clustering - #3 - What are the next two closest pairs?
+##### Ans: 10 & 11 (red).
 ![](unnamed-chunk-4.png)
 
-## Hierarchical clustering - hclust
+##### Etc. Eventually you get a dendrogram. This is how `hclust` works.
+
+## Hierarchical clustering - `hclust`
 
 ``` r
 dataFrame <- data.frame(x=x, y=y)
@@ -110,6 +117,10 @@ plot(hClustering)
 ```
 
 ![](plot2.jpeg)
+
+##### Notice that it doesn't tell you how many clusters their are. It's a tool to allow you to pick where you want to cut the clusters (based on the Y "Height" axis).
+
+##### Is Y the distance between two points?
 
 ## Prettier dendrograms
 
@@ -151,14 +162,22 @@ myplclust(hClustering, lab=rep(1:3, each=4), lab.col=rep(1:3, each=4))
 ![](prettydendro.png)
 ##### [http://gallery.r-enthusiasts.com/RGraphGallery.php?graph=79](http://gallery.r-enthusiasts.com/RGraphGallery.php?graph=79)
 
-## Merging points - complete
+# In hierarchical clustering, how do you merge points together
+## Merging points in hierarchical clustering - complete linkage
+- Find the two points in a cluster that are farthest apart
+- Compute the distance between them
 ![](unnamed-chunk-7.png)
 
-## Merging points - average
+## Merging points - average linkgage
+- Find the center of gravity between two clusters
+- Compute the distance between them
 ![](unnamed-chunk-8.png)
 
-## heatmap()
+##### Try both to see what difference they make
 
+## heatmap()
+- Runs a hierarchical cluster anaysis on the rows and the columns separately
+- Organizes the rows and columns according to the hierarhical clustering
 ``` r
 dataFrame <- data.frame(x=x, y=y)
 set.seed(143)

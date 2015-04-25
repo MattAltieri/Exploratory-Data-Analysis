@@ -7,12 +7,14 @@ y <- rnorm(12, mean=rep(c(1, 2, 1), each=4), sd=0.2)
 plot(x, y, col="blue", pch=19, cex=2)
 text(x + 0.05, y + 0.05, labels=as.character(1:12))
 
-## Hierarchical clustering - dist
+# There are three obvious clusters, but can we investigate this mathematically?
+
+## Hierarchical clustering - calculate the distance between all points
 
 dataFrame <- data.frame(x=x, y=y)
-dist(dataFrame)
+dist(dataFrame) # Returns a lower triangular matrix w/ all pairwise distances.
 
-## Hierarchical clustering - hclust
+## Hierarchical clustering - Using dist to create clusters w/ hclust
 
 dataFrame <- data.frame(x=x, y=y)
 distxy <- dist(dataFrame)
